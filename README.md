@@ -1,5 +1,7 @@
 # HERVx
 
+![badge](https://action-badges.now.sh/CCBR/HERVx?action=ci)  [![GitHub issues](https://img.shields.io/github/issues/CCBR/HERVx)](https://github.com/CCBR/HERVx/issues)  [![GitHub license](https://img.shields.io/github/license/CCBR/HERVx)](https://github.com/CCBR/HERVx/blob/master/LICENSE)  
+
 ### Table of Contents
 1. [Introduction](#1-Introduction)  
 2. [Build Resources](#2-Build-Resources)  
@@ -92,6 +94,7 @@ singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 small_S25_1.fa
 
 #### 3.2 Using Docker
 ```bash
+# Assumes docker in $PATH
 docker run -v $PWD:/data2 nciccbr/ccbr_telescope:latest HERVx -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz -o ERV_hg38
 ```
 
