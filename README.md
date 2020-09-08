@@ -1,16 +1,11 @@
 # HERVx
 
-A containerized pipeline to characterize **H**uman **E**ndogenous **R**etro**v**irus e**x**pression (`HERVx`) within the human transcriptome.
-
+**H**uman **E**ndogenous **R**etro**v**irus e**x**pression pipeline, as known as `HERVx`, is a containerized pipeline to characterize retrotranscriptome. Quantifying HERV expression is difficult due to their repetitive nature and the high degree of sequence similarity shared among subfamilies— leading to an inherit level of uncertainty during fragment assignment.
 
 HERVx calculates Human Endogenous Retrovirus (HERV) expression in paired-end
-RNA-sequencing data. Quantifying HERV expression is difficult due to their repetitive nature and the high degree of sequence similarity shared among subfamilies-- leading to an inherit level of uncertainty during fragment assignment.
+RNA-sequencing data. The HERVx pipeline runs cutadapt to remove adapter sequences and to perform quality-trimming, bowtie2 to align reads against the Human reference genome (hg38), SAMtools to convert from SAM to BAM format  and to sort reads by name, and Telescope to characterize Human Endogenous Retrovirus (HERV) expression.
 
-The HERVx pipeline runs cutadapt to remove adapter sequences and to perform
-quality-trimming, bowtie2 to align reads against the Human reference genome (hg38), SAMtools to convert from SAM to BAM format  and to sort reads by name, and Telescope to characterize Human Endogenous Retrovirus (HERV) expression.
-
-[Telescope](https://github.com/mlbendall/telescope) is a computational method that provides accurate estimation of transposable element expression (retrotranscriptome) resolved to specific genomic locations. Telescope directly addresses uncertainty in fragment assignment by reassigning ambiguously mapped fragments to the most probable source transcript as determined within a Bayesian statistical model.
-
+[Telescope](https://github.com/mlbendall/telescope) is a computational method that provides accurate estimation of transposable element expression. It directly addresses uncertainty in fragment assignment by reassigning ambiguously mapped fragments to the most probable source transcript as determined within a Bayesian statistical model.
 
 The Dockerfile will build Cutadapt, bowtie2, SAMtools, HTSlib, and Telescope from scratch along with a few other tools. Small reference files are located in `/opt2/refs/` in the container's filesystem.
 
