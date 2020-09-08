@@ -55,3 +55,5 @@ cache/
 **/cache/
 ccbr_telescope_latest.sif
 ccbr_telescope_*.sif
+ERV_hg38/
+HERV_hg38/
