@@ -1,0 +1,13 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2	    
+      - uses: docker://nciccbr/ccbr_telescope:latest
+      - run: docker run -v $PWD:/data2 nciccbr/ccbr_telescope:latest HERVx -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz -o ERV_hg38

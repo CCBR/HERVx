@@ -92,7 +92,6 @@ singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 small_S25_1.fa
 
 #### 3.2 Using Docker
 ```bash
-# Add later
 docker run -v $PWD:/data2 nciccbr/ccbr_telescope:latest HERVx -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz -o ERV_hg38
 ```
 
