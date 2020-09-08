@@ -11,3 +11,5 @@ jobs:
       - uses: actions/checkout@v2	    
       - uses: docker://nciccbr/ccbr_telescope:latest
       - run: docker run -v $PWD:/data2 nciccbr/ccbr_telescope:latest HERVx -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz -o ERV_hg38
+      - run: md5sum ERV_hg38/hervx/small_S25/telescope-telescope_report.tsv
+      - run: cat ERV_hg38/hervx/small_S25/telescope-telescope_report.tsv
