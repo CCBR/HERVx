@@ -3,13 +3,13 @@
 **H**uman **E**ndogenous **R**etro**v**irus e**x**pression pipeline, as known as `HERVx`, is a containerized pipeline to characterize retrotranscriptome. Quantifying HERV expression is difficult due to their repetitive nature and the high degree of sequence similarity shared among subfamilies— leading to an inherit level of uncertainty during fragment assignment.
 
 HERVx calculates Human Endogenous Retrovirus (HERV) expression in paired-end
-RNA-sequencing data. The HERVx pipeline runs cutadapt to remove adapter sequences and to perform quality-trimming, bowtie2 to align reads against the Human reference genome (hg38), SAMtools to convert from SAM to BAM format  and to sort reads by name, and Telescope to characterize Human Endogenous Retrovirus (HERV) expression.
+RNA-sequencing data. The pipeline runs cutadapt<sup>1</sup> to remove adapter sequences and to perform quality-trimming, bowtie2<sup>2</sup> to align reads against the Human reference genome (hg38), SAMtools<sup>3</sup> to convert from SAM to BAM format  and to sort reads by name, and Telescope<sup>4</sup> to characterize Human Endogenous Retrovirus (HERV) expression.
 
 [Telescope](https://github.com/mlbendall/telescope) is a computational method that provides accurate estimation of transposable element expression. It directly addresses uncertainty in fragment assignment by reassigning ambiguously mapped fragments to the most probable source transcript as determined within a Bayesian statistical model.
 
-The Dockerfile will build Cutadapt, bowtie2, SAMtools, HTSlib, and Telescope from scratch along with a few other tools. Small reference files are located in `/opt2/refs/` in the container's filesystem.
+The Dockerfile will build cutadapt, bowtie2, SAMtools & HTSlib, and Telescope from scratch along with a few other tools. Small reference files are located in `/opt2/refs/` in the container's filesystem.
 
-### Resources
+### Build Resources
 Reference files, resources, and indices are bundled within the container's filesystem.
 
 Currently, the following files are located in `/opt2/refs/`:
@@ -22,7 +22,7 @@ Currently, the following files are located in `/opt2/refs/`:
 
 Bowtie2 indices for `hg38` are bundled in the container's filesystem in `/opt2/bowtie2/`. Other indices can be provided by mounting the host filesystem to this PATH (overrides current hg38 indices).
 
-#### Build bowtie2 indices
+##### Bowtie2 indices
 ```bash
 # Get UCSC hg38 genome
 wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
@@ -34,7 +34,7 @@ SINGULARITY_CACHEDIR=$PWD singularity pull -F docker://nciccbr/ccbr_telescope
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif bowtie2-build hg38.fa hg38
 ```
 
-#### Build Image from Dockerfile
+##### Image from Dockerfile
 
 In the example below, change `skchronicles` with your DockerHub username.
 
@@ -75,6 +75,11 @@ singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -h
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 small_S25_1.fastq -r2 small_S25_2.fastq -o ERV_hg38
 ```
 
+### References  
+<sup>**1.**	Martin, M. (2011). "Cutadapt removes adapter sequences from high-throughput sequencing reads." EMBnet 17(1): 10-12.</sup>  
+<sup>**2.** Langmead, B. and S. L. Salzberg (2012). "Fast gapped-read alignment with Bowtie 2." Nat Methods 9(4): 357-359.</sup>  
+<sup>**3.** Li, H., et al. (2009). "The Sequence Alignment/Map format and SAMtools." Bioinformatics 25(16): 2078-2079.</sup>  
+<sup>**4.** Bendall, M. L., et al. (2019). "Telescope: Characterization of the retrotranscriptome by accurate estimation of transposable element expression." PLOS Computational Biology 15(9): e1006453.</sup>
 
 ### Notes
  - Reference files are located in /opt2/ of the container filesystem.
