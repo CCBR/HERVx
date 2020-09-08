@@ -1,10 +1,21 @@
-# Telescope
+# HERVx
 
-Characterization of Human Endogenous Retrovirus (HERV) expression within the transcriptomic landscape using RNA-seq is complicated by uncertainty in fragment assignment because of sequence similarity. Telescope is a computational method that provides accurate estimation of transposable element expression (retrotranscriptome) resolved to specific genomic locations. Telescope directly addresses uncertainty in fragment assignment by reassigning ambiguously mapped fragments to the most probable source transcript as determined within a Bayesian statistical model.
+A containerized pipeline to characterize **H**uman **E**ndogenous **R**etro**v**irus e**x**pression (`HERVx`) within the human transcriptome.
 
-Telescope can be installed from [Github](https://github.com/mlbendall/telescope). It can be installed using Conda, but I did not go down that route. This repository contains the Dockerfile to build Telescope from scratch along with a few other tools.
 
-The Dockerfile will install Cutadapt, bowtie2, SAMtools, HTSlib, and Telescope. Small reference files are located in `/opt2/refs/` in the container's filesystem. 
+HERVx calculates Human Endogenous Retrovirus (HERV) expression in paired-end
+RNA-sequencing data. Quantifying HERV expression is difficult due to their repetitive nature and the high degree of sequence similarity shared among subfamilies-- leading to an inherit level of uncertainty during fragment assignment.
+
+The HERVx pipeline runs cutadapt to remove adapter sequences and to perform
+quality-trimming, bowtie2 to align reads against the Human reference genome (hg38), SAMtools to convert from SAM to BAM format  and to sort reads by name, and Telescope to characterize Human Endogenous Retrovirus (HERV) expression.
+
+[Telescope](https://github.com/mlbendall/telescope) is a computational method that provides accurate estimation of transposable element expression (retrotranscriptome) resolved to specific genomic locations. Telescope directly addresses uncertainty in fragment assignment by reassigning ambiguously mapped fragments to the most probable source transcript as determined within a Bayesian statistical model.
+
+
+The Dockerfile will build Cutadapt, bowtie2, SAMtools, HTSlib, and Telescope from scratch along with a few other tools. Small reference files are located in `/opt2/refs/` in the container's filesystem.
+
+### Resources
+Reference files, resources, and indices are bundled within the container's filesystem.
 
 Currently, the following files are located in `/opt2/refs/`:
  - trimmonatic_TruSeqv3_adapters.fa
@@ -14,9 +25,21 @@ Currently, the following files are located in `/opt2/refs/`:
  - retro.hg38.v1.transcripts.gtf
 
 
-> **Please Note:** Bowtie2 indices for `hg38` are bundled in the container's filesystem in `/opt2/bowtie2/`. Other indices can be provided by mounting the host filesystem to this PATH (overrides current hg38 indices).
+Bowtie2 indices for `hg38` are bundled in the container's filesystem in `/opt2/bowtie2/`. Other indices can be provided by mounting the host filesystem to this PATH (overrides current hg38 indices).
 
-### Build from Dockerfile
+#### Build bowtie2 indices
+```bash
+# Get UCSC hg38 genome
+wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+zcat hg38.fa.gz > hg38.fa
+
+# Build the indices
+module load singularity
+SINGULARITY_CACHEDIR=$PWD singularity pull -F docker://nciccbr/ccbr_telescope
+singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif bowtie2-build hg38.fa hg38
+```
+
+#### Build Image from Dockerfile
 
 In the example below, change `skchronicles` with your DockerHub username.
 
@@ -51,20 +74,14 @@ docker push nciccbr/ccbr_telescope:latest
 module load singularity
 # Pull from DockerHub
 SINGULARITY_CACHEDIR=$PWD singularity pull -F docker://nciccbr/ccbr_telescope
-# Display usage and help information 
+# Display usage and help information
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -h
 # Run HERVx pipeline
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 small_S25_1.fastq -r2 small_S25_2.fastq -o ERV_hg38
 ```
 
-### Build bowtie2 indices
-```bash
-# Get UCSC hg38 genome
-wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
-zcat hg38.fa.gz > hg38.fa
 
-# Build the indices
-module load singularity
-SINGULARITY_CACHEDIR=$PWD singularity pull -F docker://nciccbr/ccbr_telescope
-singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif bowtie2-build hg38.fa hg38
-```
+### Notes
+ - Reference files are located in /opt2/ of the container filesystem.
+ - Dockerfile to build this image is located in `/opt2/Dockerfile`.
+ - Pull latest image from [DockerHub](https://hub.docker.com/repository/docker/nciccbr/ccbr_telescope)
