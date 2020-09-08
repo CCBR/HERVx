@@ -103,14 +103,14 @@ echo "Coming soon"
 ```
 
 ### 4. TLDR
- **Reference files** are located in /opt2/ of the container filesystem.  
+ **Reference files** are located in `/opt2/` of the container filesystem.  
 **Dockerfile** to build this image is located in `/opt2/Dockerfile`\.  
 **Pull** latest image from [DockerHub](https://hub.docker.com/repository/docker/nciccbr/ccbr_telescope)  
 **Usage** `singularity exec docker://nciccbr/ccbr_telescope HERVx -h`  
 
 
- ### 5. References  
- <sup>**1.**	Martin, M. (2011). "Cutadapt removes adapter sequences from high-throughput sequencing reads." EMBnet 17(1): 10-12.</sup>  
- <sup>**2.** Langmead, B. and S. L. Salzberg (2012). "Fast gapped-read alignment with Bowtie 2." Nat Methods 9(4): 357-359.</sup>  
- <sup>**3.** Li, H., et al. (2009). "The Sequence Alignment/Map format and SAMtools." Bioinformatics 25(16): 2078-2079.</sup>  
- <sup>**4.** Bendall, M. L., et al. (2019). "Telescope: Characterization of the retrotranscriptome by accurate estimation of transposable element expression." PLOS Computational Biology 15(9): e1006453.</sup>
+### 5. References  
+<sup>**1.**	Martin, M. (2011). "Cutadapt removes adapter sequences from high-throughput sequencing reads." EMBnet 17(1): 10-12.</sup>  
+<sup>**2.** Langmead, B. and S. L. Salzberg (2012). "Fast gapped-read alignment with Bowtie 2." Nat Methods 9(4): 357-359.</sup>  
+<sup>**3.** Li, H., et al. (2009). "The Sequence Alignment/Map format and SAMtools." Bioinformatics 25(16): 2078-2079.</sup>  
+<sup>**4.** Bendall, M. L., et al. (2019). "Telescope: Characterization of the retrotranscriptome by accurate estimation of transposable element expression." PLOS Computational Biology 15(9): e1006453.</sup>

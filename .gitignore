@@ -53,3 +53,5 @@ build/
 # Singularity Pull
 cache/
 **/cache/
+ccbr_telescope_latest.sif
+ccbr_telescope_*.sif
