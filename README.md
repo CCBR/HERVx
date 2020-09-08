@@ -1,5 +1,20 @@
 # HERVx
 
+### Table of Contents
+1. [Introduction](#1-Introduction)  
+2. [Build Resources](#2-Build-Resources)  
+    2.1 [Bowtie2 Indices](#21-Bowtie2-indices)  
+    2.2 [Image from Dockerfile](#22-Image-from-Dockerfile)   
+3. [Run HERVx pipeline](#3-Run-HERVx-pipeline)  
+    3.1 [Using Singularity](#31-Using-Singularity)  
+    3.2 [Using Docker](#32-Using-Docker)  
+    3.3 [Using WDL and Cromwell](#33-Using-WDL-and-Cromwell)
+4. [TLDR](#4-TLDR)
+5. [References](#5-References)
+
+
+
+### 1. Introduction  
 **H**uman **E**ndogenous **R**etro**v**irus e**x**pression pipeline, as known as `HERVx`, is a containerized pipeline to characterize retrotranscriptome. Quantifying HERV expression is difficult due to their repetitive nature and the high degree of sequence similarity shared among subfamilies— leading to an inherit level of uncertainty during fragment assignment.
 
 HERVx calculates Human Endogenous Retrovirus (HERV) expression in paired-end
@@ -9,7 +24,7 @@ RNA-sequencing data. The pipeline runs cutadapt<sup>1</sup> to remove adapter se
 
 The Dockerfile will build cutadapt, bowtie2, SAMtools & HTSlib, and Telescope from scratch along with a few other tools. Small reference files are located in `/opt2/refs/` in the container's filesystem.
 
-### Build Resources
+### 2. Build Resources
 Reference files, resources, and indices are bundled within the container's filesystem.
 
 Currently, the following files are located in `/opt2/refs/`:
@@ -22,7 +37,7 @@ Currently, the following files are located in `/opt2/refs/`:
 
 Bowtie2 indices for `hg38` are bundled in the container's filesystem in `/opt2/bowtie2/`. Other indices can be provided by mounting the host filesystem to this PATH (overrides current hg38 indices).
 
-##### Bowtie2 indices
+#### 2.1 Bowtie2 indices
 ```bash
 # Get UCSC hg38 genome
 wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
@@ -34,8 +49,7 @@ SINGULARITY_CACHEDIR=$PWD singularity pull -F docker://nciccbr/ccbr_telescope
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif bowtie2-build hg38.fa hg38
 ```
 
-##### Image from Dockerfile
-
+#### 2.2 Image from Dockerfile
 In the example below, change `skchronicles` with your DockerHub username.
 
 ```bash
@@ -64,7 +78,8 @@ docker push nciccbr/ccbr_telescope:v0.0.1
 docker push nciccbr/ccbr_telescope:latest
 ```
 
-### Run using Singularity
+### 3. Run HERVx pipeline
+#### 3.1 Using Singularity
 ```bash
 module load singularity
 # Pull from DockerHub
@@ -75,13 +90,27 @@ singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -h
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 small_S25_1.fastq -r2 small_S25_2.fastq -o ERV_hg38
 ```
 
-### References  
-<sup>**1.**	Martin, M. (2011). "Cutadapt removes adapter sequences from high-throughput sequencing reads." EMBnet 17(1): 10-12.</sup>  
-<sup>**2.** Langmead, B. and S. L. Salzberg (2012). "Fast gapped-read alignment with Bowtie 2." Nat Methods 9(4): 357-359.</sup>  
-<sup>**3.** Li, H., et al. (2009). "The Sequence Alignment/Map format and SAMtools." Bioinformatics 25(16): 2078-2079.</sup>  
-<sup>**4.** Bendall, M. L., et al. (2019). "Telescope: Characterization of the retrotranscriptome by accurate estimation of transposable element expression." PLOS Computational Biology 15(9): e1006453.</sup>
+#### 3.2 Using Docker
+```bash
+# Add later
+echo "Coming soon"
+```
 
-### Notes
- - Reference files are located in /opt2/ of the container filesystem.
- - Dockerfile to build this image is located in `/opt2/Dockerfile`.
- - Pull latest image from [DockerHub](https://hub.docker.com/repository/docker/nciccbr/ccbr_telescope)
+#### 3.3 Using WDL and Cromwell
+```bash
+# Add later
+echo "Coming soon"
+```
+
+### 4. TLDR
+ **Reference files** are located in /opt2/ of the container filesystem.  
+**Dockerfile** to build this image is located in `/opt2/Dockerfile`\.  
+**Pull** latest image from [DockerHub](https://hub.docker.com/repository/docker/nciccbr/ccbr_telescope)  
+**Usage** `singularity exec docker://nciccbr/ccbr_telescope HERVx -h`  
+
+
+ ### 5. References  
+ <sup>**1.**	Martin, M. (2011). "Cutadapt removes adapter sequences from high-throughput sequencing reads." EMBnet 17(1): 10-12.</sup>  
+ <sup>**2.** Langmead, B. and S. L. Salzberg (2012). "Fast gapped-read alignment with Bowtie 2." Nat Methods 9(4): 357-359.</sup>  
+ <sup>**3.** Li, H., et al. (2009). "The Sequence Alignment/Map format and SAMtools." Bioinformatics 25(16): 2078-2079.</sup>  
+ <sup>**4.** Bendall, M. L., et al. (2019). "Telescope: Characterization of the retrotranscriptome by accurate estimation of transposable element expression." PLOS Computational Biology 15(9): e1006453.</sup>
