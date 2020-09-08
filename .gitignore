@@ -49,3 +49,7 @@ __pycache__/
 /site
 site/
 build/
+
+# Singularity Pull
+cache/
+**/cache/
