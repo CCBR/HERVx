@@ -1,0 +1,51 @@
+# Cromwell
+cromwell-executions/
+cromwell-workflow-logs/
+
+
+# DS_Store
+._*
+.DS_Store
+
+
+# Other
+cache/
+tmp/
+slurmfiles/
+
+
+# Unit test and coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+# Python byte-compiled and optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# mkdocs documentation
+/site
+site/
+build/
