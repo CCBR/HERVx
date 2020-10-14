@@ -150,8 +150,6 @@ task telescope {
 
     # Run HERVx
     command {
-        module load singularity
-        singularity exec -B $PWD:$PWD docker://${hervx_docker} \
         HERVx -r1 ${read1} -r2 ${read2} -b ${prefix} -o ${outdir} \
                   -t ${threads} -p ${prior} -m ${max_iter} -g ${gtf}
     }
@@ -161,6 +159,8 @@ task telescope {
     }
 
     runtime {
+        docker: "nciccbr/ccbr_telescope:latest"
+        sif: "/data/CCBR_Pipeliner/db/PipeDB/db/SingularityImages/ccbr_telescope_latest.sif"
         cpus: threads
         mem: 16000
     }
