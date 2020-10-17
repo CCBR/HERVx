@@ -89,7 +89,7 @@ SINGULARITY_CACHEDIR=$PWD singularity pull -F docker://nciccbr/ccbr_telescope
 # Display usage and help information
 singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -h
 # Run HERVx pipeline
-singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 small_S25_1.fastq -r2 small_S25_2.fastq -o ERV_hg38
+singularity exec -B $PWD:$PWD ccbr_telescope_latest.sif HERVx -r1 tests/small_S25_1.fastq -r2 tests/small_S25_2.fastq -o ERV_hg38
 ```
 
 #### 3.2 Using Docker
@@ -100,8 +100,21 @@ docker run -v $PWD:/data2 nciccbr/ccbr_telescope:latest HERVx -r1 tests/small_S2
 
 #### 3.3 Using WDL and Cromwell
 ```bash
-# Add later
-echo "Coming soon"
+# hervx is configured to use different cromwell execution backends: local or slurm
+# view the help page for more information
+./hervx --help
+
+# @local: uses local singularity cromwell backend
+# The local EXECUTOR will run serially on compute
+# instance. This is useful for testing, debugging,
+# or when a users does not have access to a high
+# performance computing environment.
+./hervx local -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz --outdir /scratch/$USER/hervx_ouput
+
+# @slurm: uses slurm and singularity cromwell backend
+# The slurm EXECUTOR will submit jobs to the cluster.
+# It is recommended running hervx in this mode.
+./hervx slurm -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz --outdir /scratch/$USER/hervx_ouput
 ```
 
 ### 4. TLDR
