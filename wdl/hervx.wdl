@@ -160,7 +160,6 @@ task telescope {
 
     runtime {
         docker: "nciccbr/ccbr_telescope:latest"
-        sif: "/data/CCBR_Pipeliner/db/PipeDB/db/SingularityImages/ccbr_telescope_latest.sif"
         cpus: threads
         mem: 16000
     }
