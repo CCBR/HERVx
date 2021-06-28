@@ -210,7 +210,7 @@ function orchestrate(){
   # @INPUT $1 = Cromwell Executor backend, either local or slurm
   # @INPUT $2 = Pipeline outdir
 
-  module load cromwell/52 2> /dev/null || fatal "Fail to load 'cromwell/52', not installed on target system."
+  module load cromwell 2> /dev/null || fatal "Fail to load 'cromwell/52', not installed on target system."
 
   # Cromwell executor
   executor=${1:-local}
@@ -267,7 +267,7 @@ function main(){
 
   # Print pipeline metadata prior to running
   hervxrepo=$(abspath $(dirname  "$0"))
-  echo -e "\nHERVx (version 0.0.1)\t$(date)\t${hervxrepo}"
+  echo -e "HERVx (version 0.0.1)\t$(date)\t${hervxrepo}"
   echo -e "Running pipeline with the following parameters:"
   for key in "${!Arguments[@]}"; do echo -e "\t-${key}\t${Arguments["$key"]}"; done
 
