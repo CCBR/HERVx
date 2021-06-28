@@ -38,7 +38,11 @@
 ## - https://github.com/CCBR/HERVx
 ## DockerHub:
 ## - https://hub.docker.com/repository/docker/nciccbr/ccbr_telescope
+##
+## WDL Specification:
+## - https://github.com/openwdl/wdl/blob/main/versions/development/SPEC.md
 
+# WDL specification version, cromwell does not support 1.1 yet
 version 1.0
 
 ## Workflow Definition
@@ -55,26 +59,29 @@ workflow hervx {
         String prefix
 
         # Optional Inputs
-        String? dockerhub = "nciccbr/ccbr_telescope:latest"
-        String? outdir = "output"
-        String? gtf = "HERV_rmsk.hg38.v2.transcripts.gtf"
-        Int? prior = 200000
-        Int? max_iter = 200
-        Int? threads = 2
+        # Default values are defined in the task definition
+        String? docker
+        String? outdir
+        String? gtf 
+        Int? prior 
+        Int? max_iter
+        Int? threads
+        Int? mem
     }
 
-    # Run telescope step
+    # Run telescope in parallel for each sample
     call telescope {
         input:
             read1 = read1,
             read2 = read2,
             prefix = prefix,
-            outdir = outdir,
-            gtf = gtf,
-            prior = prior,
-            max_iter = max_iter,
-            threads = threads,
-            hervx_docker = dockerhub
+            hervx_outdir = outdir,
+            hervx_gtf = gtf,
+            hervx_prior = prior,
+            hervx_max_iter = max_iter,
+            hervx_threads = threads,
+            hervx_docker = docker,
+            hervx_mem = mem
     }
 
     # Main workflow outputs
@@ -86,18 +93,18 @@ workflow hervx {
     # Workflow metadata
     parameter_meta {
         read1: {
-            description: "The read1 (R1) FastQ file to be run through HERVx.",
+            description: "Read 1 (R1) FastQ file(s) to be run through HERVx.",
             category: "required"
         }
         read2: {
-            description: "The read2 (R2) FastQ file to be run through HERVx.",
+            description: "Read 2 (R2) FastQ file(s) to be run through HERVx.",
             category: "required"
         }
         prefix: {
             description: "Base name of sample. This is the name of the sample without the PATH and the file extension",
             category: "required"
         }
-        outdir:  {
+        hervx_outdir:  {
             description: "Working directory to which the outputs will be written. [Default: output/]",
             category: "common"
         }
@@ -117,13 +124,18 @@ workflow hervx {
             description: "Number of threads for multi-threaded applications. [Default: 2]",
             category: "common"
         }
+        mem:  {
+            description: "Amount of allocated memory (in GB) for computation. [Default: 8]",
+            category: "common"
+        }
+        
         hervx_docker: {
             description: "Docker images needed for workflow execution. [Default: nciccbr/ccbr_telescope:latest]",
             category: "advanced"
         }
     }
 
-    meta {author: "Skyler Kuhn" email: "kuhnsa2@nih.gov"}
+    meta {author: "Skyler Kuhn" email: "kuhnsa@nih.gov"}
 }
 
 
@@ -139,28 +151,42 @@ task telescope {
         File read2
         String prefix
 
-        # Optional
+        # Optional Inputs and Default Values
         String? hervx_docker
-        String? outdir
-        String? gtf
-        Int? prior
-        Int? max_iter
-        Int? threads
+        String docker = select_first([hervx_docker, "nciccbr/ccbr_telescope:latest"])
+        
+        String? hervx_outdir
+        String outdir = select_first([hervx_outdir, "output"])
+
+        String? hervx_gtf
+        String gtf = select_first([hervx_gtf, "HERV_rmsk.hg38.v2.transcripts.gtf"])
+
+        Int? hervx_prior 
+        Int prior = select_first([hervx_prior, 200000])
+
+        Int? hervx_max_iter
+        Int max_iter = select_first([hervx_max_iter, 200])
+
+        Int? hervx_threads
+        Int threads = select_first([hervx_threads, 2])
+
+        Int? hervx_mem
+        Int mem = select_first([hervx_mem, 8])
     }
 
     # Run HERVx
-    command {
-        HERVx -r1 ${read1} -r2 ${read2} -b ${prefix} -o ${outdir} \
-                  -t ${threads} -p ${prior} -m ${max_iter} -g ${gtf}
-    }
+    command <<<
+        HERVx -r1 ~{read1} -r2 ~{read2} -b ~{prefix} -o ~{outdir} \
+                  -t ~{threads} -p ~{prior} -m ~{max_iter} -g ~{gtf}
+    >>>
 
     output {
-        File telescope_output = "${outdir}/hervx/${prefix}/telescope-telescope_report.tsv"
+        File telescope_output = "~{outdir}/hervx/~{prefix}/telescope-telescope_report.tsv"
     }
 
     runtime {
-        docker: "nciccbr/ccbr_telescope:latest"
-        cpus: threads
-        mem: 16000
+        docker: docker
+        cpu: threads
+        memory: "~{mem} GB"
     }
 }
