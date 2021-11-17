@@ -1,6 +1,6 @@
 # HERVx
 
-![badge](https://action-badges.now.sh/CCBR/HERVx?action=ci)  [![GitHub issues](https://img.shields.io/github/issues/CCBR/HERVx)](https://github.com/CCBR/HERVx/issues)  [![GitHub license](https://img.shields.io/github/license/CCBR/HERVx)](https://github.com/CCBR/HERVx/blob/master/LICENSE)  
+[![Build](https://github.com/CCBR/HERVx/workflows/ci/badge.svg)](https://github.com/CCBR/HERVx/actions) [![GitHub issues](https://img.shields.io/github/issues/CCBR/HERVx)](https://github.com/CCBR/HERVx/issues)  [![GitHub license](https://img.shields.io/github/license/CCBR/HERVx)](https://github.com/CCBR/HERVx/blob/master/LICENSE)  
 
 ### Table of Contents
 1. [Introduction](#1-Introduction)  
