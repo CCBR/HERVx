@@ -67,8 +67,8 @@ OPTIONS:
   -h, --help     [Type: Bool]  Displays usage and help information.
 
 Example:
-  $ hervx local -r1 $(dirname  "$0")/tests/small_S25.R1.fastq.gz -r2 $(dirname  "$0")/tests/small_S25.R2.fastq.gz --outdir /scratch/$USER/
-  $ hervx slurm -r1 $(dirname  "$0")/tests/small_S25.R1.fastq.gz -r2 $(dirname  "$0")/tests/small_S25.R2.fastq.gz --outdir /scratch/$USER/
+  $ hervx local -r1 $(dirname  "$0")/tests/small_S25.R1.fastq.gz -r2 $(dirname  "$0")/tests/small_S25.R2.fastq.gz --outdir /data/$USER/
+  $ hervx slurm -r1 $(dirname  "$0")/tests/small_S25.R1.fastq.gz -r2 $(dirname  "$0")/tests/small_S25.R2.fastq.gz --outdir /data/$USER/
 
 Version:
   0.0.1
@@ -83,7 +83,7 @@ function abspath() { readlink -e "$1"; }
 function parser() {
   # Adds parsed command-line args to GLOBAL $Arguments associative array
   # + KEYS = short_cli_flag ("r1", "r2", "o", ...)
-  # + VALUES = parsed_user_value ("WT_1.fastq" "WT_2.fastq", "/scratch", ...)
+  # + VALUES = parsed_user_value ("WT_1.fastq" "WT_2.fastq", "/data/$USER", ...)
   # @INPUT "$@" = user command-line arguments
   # @CALLS check() to see if the user provided all the required arguments
 

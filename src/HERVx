@@ -74,7 +74,7 @@ function fatal() { cat <<< "$@" 1>&2; usage; exit 1; }
 function parser() {
   # Adds parsed command-line args to GLOBAL $Arguments associative array
   # + KEYS = short_cli_flag ("r1", "r2", "o", ...)
-  # + VALUES = parsed_user_value ("WT_1.fastq" "WT_2.fastq", "/scratch", ...)
+  # + VALUES = parsed_user_value ("WT_1.fastq" "WT_2.fastq", "/data/$USER", ...)
   # @INPUT "$@" = user command-line arguments
   # @CALLS check() to see if the user provided all the required arguments
 
