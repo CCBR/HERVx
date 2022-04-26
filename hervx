@@ -192,11 +192,12 @@ function setup(){
 
   # Copy and/or over-write previous input JSON file template
   local template="${2}/config/inputs.json"
+  local fullpath="$(abspath "${2}")"
   cp "$1" "${template}"
 
   # Update pointer to input FastQ files to use symlinks in Pipeline outdir
-  Arguments[r1]="${2}/$(basename "${Arguments[r1]}")"
-  Arguments[r2]="${2}/$(basename "${Arguments[r2]}")"
+  Arguments[r1]="${fullpath}/$(basename "${Arguments[r1]}")"
+  Arguments[r2]="${fullpath}/$(basename "${Arguments[r2]}")"
 
   # Create new inputs.json using the template
   for key in "${!Arguments[@]}"; do value=${Arguments["$key"]};
@@ -218,7 +219,7 @@ function orchestrate(){
   # Goto Pipeline Ouput directory
   # Create a local singularity cache in output directory
   # cache can be used instead of re-pulling from DockerHub everytime
-  cd "$2" && export SINGULARITY_CACHEDIR="${2}/.singularity"
+  cd "$2" && export SINGULARITY_CACHEDIR="${PWD}/.singularity"
   mkdir -p $SINGULARITY_CACHEDIR
 
   # unsetting XDG_RUNTIME_DIR to avoid some unsighly but harmless warnings
@@ -258,8 +259,8 @@ function main(){
   parser "${@:2}" # Remove first item of list
 
   # Setting defaults for non-required arguments
-  Arguments[b]=$(clean "${Arguments[b]:-}")
-  Arguments[o]="${Arguments[o]%/}"              # clean outdir path (remove trailing '/')
+  Arguments[b]="$(clean "${Arguments[b]:-}")"
+  Arguments[o]="$(abspath "${Arguments[o]%/}")" # clean outdir path (remove trailing '/')
   Arguments[t]="${Arguments[t]:-2}"             # default is 2 threads
   Arguments[g]="${Arguments[g]:-HERV_rmsk.hg38.v2.transcripts.gtf}" # default = HERV_rmsk.hg38.v2.transcripts.gtf
   Arguments[p]="${Arguments[p]:-200000}"                            # default = 200000

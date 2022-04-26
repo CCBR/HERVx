@@ -109,12 +109,12 @@ docker run -v $PWD:/data2 nciccbr/ccbr_telescope:latest HERVx -r1 tests/small_S2
 # instance. This is useful for testing, debugging,
 # or when a users does not have access to a high
 # performance computing environment.
-./hervx local -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz --outdir /data/$USER/hervx_output
+./hervx local -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz --outdir ERV_hg38
 
 # @slurm: uses slurm and singularity cromwell backend
 # The slurm EXECUTOR will submit jobs to the cluster.
 # It is recommended running hervx in this mode.
-./hervx slurm -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz --outdir /data/$USER/hervx_output
+./hervx slurm -r1 tests/small_S25.R1.fastq.gz -r2 tests/small_S25.R2.fastq.gz --outdir ERV_hg38
 ```
 
 ### 4. TLDR
