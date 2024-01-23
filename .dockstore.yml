@@ -1,7 +1,0 @@
-version: 1.2
-workflows:
-   - name: HERVx 
-     subclass: WDL
-     primaryDescriptorPath: /wdl/hervx.wdl
-     testParameterFiles:
-         - /tests/inputs.json

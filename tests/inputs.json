@@ -1,6 +1,0 @@
-{
-  "hervx.read1": "tests/small_S25.R1.fastq.gz",
-  "hervx.read2": "tests/small_S25.R2.fastq.gz",
-  "hervx.prefix": "small_S25",
-  "hervx.outdir": "/scratch/Testing/WDL_HERVx/"
-}
