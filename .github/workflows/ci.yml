@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - master
-
+      
+permissions:
+  contents: read
+  
 jobs:
   docker-test:
     runs-on: ubuntu-latest
